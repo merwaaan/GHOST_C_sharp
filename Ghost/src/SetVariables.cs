@@ -1,11 +1,11 @@
 ﻿/*
  * GHOST (General meta-Heuristic Optimization Solving Tool) is a C# library 
- * designed to solve combinatorial satisfaction and optimization problems within 
+ * designed to Solve combinatorial satisfaction and optimization problems within 
  * some tenth of milliseconds. It has been originally designed to handle 
  * StarCraft: Brood War-related problems. 
  * 
  * GHOST is a framework aiming to easily model and implement satisfaction and optimization
- * problems. It contains a meta-heuristic solver aiming to solve any kind of these problems 
+ * problems. It contains a meta-heuristic solver aiming to Solve any kind of these problems 
  * represented by a CSP/COP. It is a generalization of the C++ Wall-in project (https://github.com/richoux/Wall-in) 
  * and a C# adaptation and improvement of the GHOST's C++ version (https://github.com/richoux/GHOST).
  * Please visit https://github.com/richoux/GHOST_C_sharp for further information.
@@ -29,6 +29,7 @@
 
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace ghost
 {
@@ -41,23 +42,38 @@ namespace ghost
   public class SetVariables<TypeVariable> where TypeVariable : Variable
   {
 
-    /**
-     * The unique constructor taking a list of variables in input. 
-     */
-    public SetVariables( List<TypeVariable> variables )
-    {
-      Variables = variables;
-    }
+        /**
+        * The unique constructor taking a list of variables in input. 
+        */
+        public SetVariables(List<TypeVariable> variables)
+        {
+            Variables = variables;
+        }
+
+        /**
+        * The constructor taking a variable number of variables as input. 
+        */
+        public SetVariables(params TypeVariable[] variables)
+        {
+            Variables = variables.ToList();
+        }
+
+       /**
+         * Returns the value of a given variable.
+         * @param index is the index of the considered variable. If the index is 
+         * out of range, an IndexOutOfRangeException is raised.
+         */
+        public virtual TypeVariable ByName(string name)
+        {
+            return Variables.Find(v => v.Name == name);
+        }
 
     /**
      * Set each variable of the set to a random value, calling Domain.RandomValue(). 
      */
     public void RandomInitialization()
     {
-      foreach( Variable v in Variables )
-      {
-        v.SetValue( v.Domain.RandomValue() );
-      }
+      Variables.ForEach(v => v.SetValue(v.Domain.RandomValue()));
     }
 
     /**
@@ -74,12 +90,7 @@ namespace ghost
      */
     public int GetSizeAllDomains()
     {
-      int sum = 0;
-
-      for( int i = 0 ; i < Variables.Count ; ++i )
-        sum += Variables[ i ].Domain.GetSize();
-
-      return sum;
+      return Variables.Sum(v => v.Domain.GetSize());
     }
 
     /**
@@ -119,7 +130,9 @@ namespace ghost
     public virtual void ResetDomain( int index )
     {
       if( index >= 0 && index < Variables.Count )
-        Variables[ index ].ResetDomain();
+        Variables[index].ResetDomain();
+      else
+        throw new IndexOutOfRangeException("Bad index for ResetDomain method");
     }
 
     /**
@@ -138,7 +151,9 @@ namespace ghost
     public virtual void ShiftValue( int index ) 
     {
       if( index >= 0 && index < Variables.Count )
-        Variables[ index ].ShiftValue();
+        Variables[index].ShiftValue();
+      else
+        throw new IndexOutOfRangeException("Bad index for ShiftValue method");
     }
 
     /**
@@ -149,7 +164,9 @@ namespace ghost
     public virtual void UnshiftValue( int index )
     {
       if( index >= 0 && index < Variables.Count )
-        Variables[ index ].UnshiftValue();
+        Variables[index].UnshiftValue();
+      else
+        throw new IndexOutOfRangeException("Bad index for UnshiftValue method");
     }
       
     /**
@@ -175,7 +192,9 @@ namespace ghost
     public virtual void SetValue( int index, int value )
     {
       if( index >= 0 && index < Variables.Count )
-        Variables[ index ].SetValue( value );
+        Variables[index].SetValue(value);
+      else
+        throw new IndexOutOfRangeException("Bad index for SetValue method");
     }
 
     /**

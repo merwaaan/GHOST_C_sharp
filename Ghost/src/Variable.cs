@@ -1,11 +1,11 @@
 ﻿/*
  * GHOST (General meta-Heuristic Optimization Solving Tool) is a C# library 
- * designed to solve combinatorial satisfaction and optimization problems within 
+ * designed to Solve combinatorial satisfaction and optimization problems within 
  * some tenth of milliseconds. It has been originally designed to handle 
  * StarCraft: Brood War-related problems. 
  * 
  * GHOST is a framework aiming to easily model and implement satisfaction and optimization
- * problems. It contains a meta-heuristic solver aiming to solve any kind of these problems 
+ * problems. It contains a meta-heuristic solver aiming to Solve any kind of these problems 
  * represented by a CSP/COP. It is a generalization of the C++ Wall-in project (https://github.com/richoux/Wall-in) 
  * and a C# adaptation and improvement of the GHOST's C++ version (https://github.com/richoux/GHOST).
  * Please visit https://github.com/richoux/GHOST_C_sharp for further information.
@@ -29,6 +29,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ghost
 {
@@ -36,12 +37,12 @@ namespace ghost
    * Variable is the abstract class giving a generic interface of variables. 
    * A variable is characterised by a name, a long name (called full name), a Domain and its current value (actually, an iterator on its Domain).
    */
-  public abstract class Variable
+  public class Variable
   {
     /**
      * Constructor where the domain will be instanciated by default.
      */
-    protected Variable( string name, string fullName ) : this( name, fullName, null, -1 ) { }
+    public Variable( string name, string fullName ) : this( name, fullName, null, -1 ) { }
 
     /**
      * Regular constructor. The domain is cloned or instanciated if null. 
@@ -49,7 +50,7 @@ namespace ghost
      * or to -42 if the Domain has not been initialized.
      * @see Domain.IsInitialized()
      */
-    protected Variable( string name, string fullName, Domain domain, int value )
+    public Variable(string name, string fullName, Domain domain, int value)
     {
       Name = name;
       FullName = fullName;
@@ -57,7 +58,12 @@ namespace ghost
       // if value is not in domain, domain.IndexOf( value ) returns -1
       IndexDomain = Domain.IsInitialized() ? Domain.IndexOf( value ) : -42;
     }
-            
+
+    /**
+    * Constructor where the name and full name are the same.
+    */
+    public Variable(string name, Domain domain, int value) : this(name, name, domain, value) { }
+
     /**
      * Reset the variable's domain to its initial values.
      * @see Domain.ResetToInitial()
@@ -88,7 +94,7 @@ namespace ghost
     }
 
     /**
-     * To knwo the current variable value.
+     * To know the current variable value.
      * @return An integer corresponding to the variable's current value.
      */
     public int GetValue()
@@ -110,12 +116,9 @@ namespace ghost
      */
     public List<int> PossibleValues()
     {
-      var possibleValues = new List<int>();
-
-      for( int i = 0 ; i < Domain.GetSize() ; ++i )
-        possibleValues.Add( Domain.GetValue( i ) );
-
-      return possibleValues;
+      return Enumerable.Range( 0, Domain.GetSize() )
+          .Select( i => Domain.GetValue( i ) )
+          .ToList();
     }
 
     public string Name { get; protected set; } /**< Name is the short name of the variable. For instance, 'b'. */

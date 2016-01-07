@@ -1,11 +1,11 @@
 /*
  * GHOST (General meta-Heuristic Optimization Solving Tool) is a C# library 
- * designed to solve combinatorial satisfaction and optimization problems within 
+ * designed to Solve combinatorial satisfaction and optimization problems within 
  * some tenth of milliseconds. It has been originally designed to handle 
  * StarCraft: Brood War-related problems. 
  * 
  * GHOST is a framework aiming to easily model and implement satisfaction and optimization
- * problems. It contains a meta-heuristic solver aiming to solve any kind of these problems 
+ * problems. It contains a meta-heuristic solver aiming to Solve any kind of these problems 
  * represented by a CSP/COP. It is a generalization of the C++ Wall-in project (https://github.com/richoux/Wall-in) 
  * and a C# adaptation and improvement of the GHOST's C++ version (https://github.com/richoux/GHOST).
  * Please visit https://github.com/richoux/GHOST_C_sharp for further information.
@@ -82,7 +82,7 @@ namespace ghost
     private List<int>            _bestSolution;	
     private bool                 _isNullObjective;
 
-    public double solve( double satTimeout, double optTimeout = 0, bool doRandomInitialization = true )
+    public double Solve( double satTimeout, double optTimeout = 0, bool doRandomInitialization = true )
     {
       if( optTimeout.Equals(0) )
 	      optTimeout = satTimeout * 10;
