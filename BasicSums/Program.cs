@@ -11,7 +11,7 @@ using ghost;
 namespace BasicSums
 {
 
-    using Solver = Solver<Variable, SetVariables<Variable>, Constraint<SetVariables<Variable>, Variable>>;
+    using SumSolver = Solver<Variable, SetVariables<Variable>, NumberConstraint>;
 
     class Program
     {
@@ -21,9 +21,9 @@ namespace BasicSums
             var domain = new Domain(10, 0);
 
             // Three variables
-            var x = new Variable("x", domain, 9);
-            var y = new Variable("y", domain, 6);
-            var z = new Variable("z", domain, 2);
+            var x = new Variable("x", domain, 0);
+            var y = new Variable("y", domain, 0);
+            var z = new Variable("z", domain, 0);
             var set = new SetVariables<Variable>(x, y, z);
             
             var constraints = new List<NumberConstraint>
@@ -36,14 +36,14 @@ namespace BasicSums
             // that satisfies the constraints
             var objective = new LargestSum();
 
-            var solver = new Solver(set, constraints, objective);
-            solver.solve(20, 150);
+            var solver = new SumSolver(set, constraints, objective);
+            solver.solve(200, 1500); // There is no rush so take the time to find a good solution
 
             int total = Enumerable
                 .Range(0, set.GetNumberVariables())
                 .Sum(i => set.GetValue(i));
 
-            // The optimal result would be 17 (x=9, y=6, z=2)
+            // The optimal result is 17 (x=9, y=6, z=2)
             Console.WriteLine("Computed solution = {0}, Best solution = {1}", total, 9 + 6 + 2);
             Console.ReadLine();
         }

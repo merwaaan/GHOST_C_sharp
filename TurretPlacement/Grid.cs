@@ -33,6 +33,10 @@ namespace TurretPlacement
             _data = Enumerable.Repeat(-1, Width * Height).ToArray();
         }
 
+        /**
+         * Fill a square of the grid with a specific value.
+         * Useful for quickly adding patches of territory.
+         */
         public void Square(int left, int top, int width, int height, int value)
         {
             for (int x = left; x < left + width && x < Width; ++x)
@@ -40,6 +44,9 @@ namespace TurretPlacement
                     this[x, y] = value;
         }
 
+        /**
+         * Convert a domain index to the corresponding (x,y) position.
+         */
         public Position IndexToPosition(int index)
         {
             return new Position
@@ -49,16 +56,26 @@ namespace TurretPlacement
             };
         }
 
+        /**
+         * Convert an (x,y) position to the corresponding domain index.
+         */
         public int PositionToIndex(int x, int y)
         {
             return y*Width + x;
         }
 
+        /**
+         * Check if the position (x,y) is in the grid.
+         */
         public bool ContainsPosition(int x, int y)
         {
             return x >= 0 && x < Width && y >= 0 && y < Height;
         }
 
+        /**
+         * Draw the grid in the console.
+         * Values stored in the grid and turrets are printed on the map.
+         */
         public void Draw(TurretSet turrets)
         {
             string line = new string('-', Width + 2);

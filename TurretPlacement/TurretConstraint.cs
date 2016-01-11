@@ -9,10 +9,8 @@ namespace TurretPlacement
 {
     abstract class TurretConstraint : Constraint<TurretSet, Turret>
     {
-
         protected TurretConstraint(TurretSet turrets) : base(turrets)
         {
         }
-
     }
 }

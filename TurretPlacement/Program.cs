@@ -13,11 +13,13 @@ namespace TurretPlacement
     {
         static void Main(string[] args)
         {
-            // See the ScenarioN() methods for various setups
+            // See the ScenarioN() methods for various setups with
+            // different grid sizes, numbers of turrets and radii
             int numTurrets, radius;
             Grid grid;
             Scenario1(out numTurrets, out radius, out grid);
 
+            // The variables are turrets that will be placed on the grid
             var turrets = new TurretSet(numTurrets, Team.A, radius, grid);
 
             var constraints = new List<TurretConstraint>
@@ -27,10 +29,11 @@ namespace TurretPlacement
                 //new CloseToEnemy() // TODO: should be close to potential threats (objective or constraint?)
             };
 
+            // Turrets should provide the best coverage possible of friendly tiles (same team)
             var objective = new Coverage();
 
             var solver = new Solver<Turret, TurretSet, TurretConstraint>(turrets, constraints, objective);
-            solver.solve(20, 150);
+            solver.solve(100, 1500);
 
             grid.Draw(turrets);
             Console.WriteLine(turrets[0].ProtectedTiles());

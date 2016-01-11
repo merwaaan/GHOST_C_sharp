@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace TurretPlacement
 {
+
+    /**
+     * This constraint ensures that turrets are placed on friendly tiles only.
+     */
     class InTerritory : TurretConstraint
     {
 
@@ -15,20 +19,14 @@ namespace TurretPlacement
 
         public override double Cost(double[] variableCost)
         {
+            // Accumulate cost for each turret out of its territory
             var costs = Enumerable
                 .Range(0, Variables.GetNumberVariables())
-                .Select(i => Variables[i].InOwnTerritory() ? 0.0 : int.MaxValue);
+                .Select(i => Variables[i].InOwnTerritory() ? 0.0 : 1.0f);
 
             double total = costs.Sum();
 
-            /*if (total <= Resource)
-                return 0;
-            else
-            {
-                double surplus = total - Resource;
-                for (int i = 0; i < Variables.GetNumberVariables(); ++i)
-                    variableCost[i] = costs[i] >= surplus ? costs[i] : 0;
-            }*/
+            // TODO should fill variableCost???
 
             return total;
         }

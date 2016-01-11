@@ -15,7 +15,7 @@ namespace BasicSums
     {
 
         public readonly int _index; // Index of the variable in the set that is constrained
-        public readonly int _value; // Value that the variable must be less than
+        public readonly int _value; // Value that this variable must be less than
 
         public SmallerThan(SetVariables<Variable> variables, int index, int value)
             : base(variables)
@@ -33,7 +33,7 @@ namespace BasicSums
 
             // Set the individual cost of each variable to 0 if they 
             // are not included in the constraint, set it to the
-            //difference that was just computed otherwise
+            // difference that was just computed otherwise
             for (int i = 0; i < variableCosts.Length; ++i)
                 variableCosts[i] = i == _index ? diff : 0.0;
 

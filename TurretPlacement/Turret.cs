@@ -11,7 +11,7 @@ namespace TurretPlacement
     {
 
         public readonly Team Team;
-        public readonly int Radius;
+        public readonly int Radius; // The turret protects tiles within this radius
         public readonly Grid Grid;
         public readonly TurretSet AllTurrets;
 
@@ -24,12 +24,19 @@ namespace TurretPlacement
             AllTurrets = allTurrets;
         }
 
+        /**
+         * Check if the turret is currently placed at a position that belongs
+         * to its own team.
+         */
         public bool InOwnTerritory()
         {
             var position = Grid.IndexToPosition(IndexDomain);
             return Grid[position.x, position.y] == (int) Team;
         }
 
+        /**
+         * Check if the position (x,y) lies in the radius of the turret.
+         */
         public bool InRadius(int x, int y)
         {
             var position = Grid.IndexToPosition(IndexDomain);
@@ -37,11 +44,21 @@ namespace TurretPlacement
                    y >= position.x - Radius && y <= position.y + Radius;
         }
 
+        /**
+         * Check if the tile at position (x,y) is currently protected by the turret
+         * (if it is in its radius and belongs to the same team).
+         */
         public bool IsProtectingTile(int x, int y)
         {
             return InRadius(x, y) && Grid[x, y] == (int) Team;
         }
 
+        /**
+         * Count the number of tiles protected by the turret.
+         * 
+         * @param sharing limits the count to tiles that are not already protected
+         * by another turret when set.
+         */
         public int ProtectedTiles(bool sharing = false)
         {
             int count = 0;
