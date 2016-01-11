@@ -1,4 +1,9 @@
 *.exe
 *.mdb
+*.cache
+*.dll
+*.suo
 .fuse*
 doc/
+obj/
+bin/
