@@ -43,9 +43,13 @@
   <ItemGroup>
     <Compile Include="Coverage.cs" />
     <Compile Include="Grid.cs" />
+    <Compile Include="NoOverlap.cs" />
+    <Compile Include="CloseToEnemy.cs" />
+    <Compile Include="ProtectOwnTiles.cs" />
     <Compile Include="InTerritory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenario.cs" />
     <Compile Include="Turret.cs" />
     <Compile Include="TurretConstraint.cs" />
     <Compile Include="TurretSet.cs" />

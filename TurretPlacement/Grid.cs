@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using ghost;
 
 namespace TurretPlacement
@@ -12,17 +10,28 @@ namespace TurretPlacement
         {
             public int x;
             public int y;
+
+            public override string ToString()
+            {
+                return "(" + x + "," + y +")";
+            }
         }
 
         public int Width { get; set; }
         public int Height { get; set; }
 
-        protected int[] _data;
+        protected Team[] _data;
 
-        public int this[int x, int y]
+        public Team this[int x, int y]
         {
             get { return _data[PositionToIndex(x, y)]; }
             set { _data[PositionToIndex(x, y)] = value; }
+        }
+
+        public Team this[int index]
+        {
+            get { return _data[index]; }
+            set { _data[index] = value; }
         }
 
         public Grid(int width, int height) : base(width * height, 0)
@@ -30,18 +39,18 @@ namespace TurretPlacement
             Width = width;
             Height = height;
 
-            _data = Enumerable.Repeat(-1, Width * Height).ToArray();
+            _data = Enumerable.Repeat(Team.NONE, Width * Height).ToArray();
         }
 
         /**
          * Fill a square of the grid with a specific value.
          * Useful for quickly adding patches of territory.
          */
-        public void Square(int left, int top, int width, int height, int value)
+        public void Square(int left, int top, int width, int height, Team team)
         {
             for (int x = left; x < left + width && x < Width; ++x)
                 for (int y = top; y < top + height && y < Height; ++y)
-                    this[x, y] = value;
+                    this[x, y] = team;
         }
 
         /**
@@ -72,6 +81,21 @@ namespace TurretPlacement
             return x >= 0 && x < Width && y >= 0 && y < Height;
         }
 
+        public double Distance(int index1, int index2)
+        {
+            var pos1 = IndexToPosition(index1);
+            var pos2 = IndexToPosition(index2);
+            return Math.Sqrt(Math.Pow(pos1.x - pos2.x, 2) + Math.Pow(pos1.y - pos2.y, 2));
+        }
+
+        public double DistanceToClosestTerritory(int posIndex, Team team)
+        {
+            return Enumerable.Range(0, Width*Height)
+                .Where(index => this[index] == team)
+                .OrderBy(index => Distance(posIndex, index))
+                .First();
+        }
+
         /**
          * Draw the grid in the console.
          * Values stored in the grid and turrets are printed on the map.
@@ -88,11 +112,23 @@ namespace TurretPlacement
 
                 Turret turret = turrets.At(i);
                 if (turret != null)
-                    Console.Write("X");
-                else
-                    Console.Write(_data[i] >= 0 ? _data[i].ToString() : " ");
+                    Console.Write(turrets.GetIndex(turret));
+                else 
+                    switch (_data[i])
+                    {
+                        case Team.ALLY:
+                            Console.Write("A");
+                            break;
+                        case Team.ENEMY:
+                            Console.Write("B");
+                            break;
+                        case Team.NONE:
+                            Console.Write(" ");
+                            break;
+                    }
 
-                if (i % Width == Width -1)
+
+                if (i % Width == Width - 1)
                     Console.WriteLine('|');
             }
 

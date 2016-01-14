@@ -37,7 +37,7 @@ namespace TurretPlacement
                 if (exclude != null && turret == exclude)
                     return false;
 
-                return turret.IsProtectingTile(x, y);
+                return turret.IsProtecting(x, y);
             });
         }
     }

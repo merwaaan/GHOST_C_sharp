@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using ghost;
 
 namespace BasicSums
@@ -25,11 +23,11 @@ namespace BasicSums
             return 1.0f/cost;
         }
 
-        public virtual int HeuristicValue(List<int> valuesIndex, int variableIndex, SetVariables<Variable> variables)
+        /*public virtual int HeuristicValue(List<int> valuesIndex, int variableIndex, SetVariables<Variable> variables)
         {
             // Choose the best new value within all best values
             // such that the variable is the largest possible
-            return valuesIndex.Max(i => variables.GetValue(i));
-        }
+            return valuesIndex.Max(i => variables.GetValue(i)); // TODO: should return the index!
+        }*/
     }
 }

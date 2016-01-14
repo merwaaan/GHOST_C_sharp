@@ -4,7 +4,7 @@ using System.Linq;
 using ghost;
 
 /**
- * Basic example in which we look for the largest sum of a set of integer
+ * Basic example in which we look for the largest sum of a set of integers
  * given some constraints regarding their maximum value. 
  */
 
@@ -37,7 +37,7 @@ namespace BasicSums
             var objective = new LargestSum();
 
             var solver = new SumSolver(set, constraints, objective);
-            solver.solve(200, 1500); // There is no rush so take the time to find a good solution
+            solver.solve(100, 600); // There is no rush so take the time to find a good solution
 
             int total = Enumerable
                 .Range(0, set.GetNumberVariables())

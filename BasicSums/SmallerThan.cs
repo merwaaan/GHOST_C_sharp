@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ghost;
 
 namespace BasicSums
@@ -31,11 +32,8 @@ namespace BasicSums
             double diff = Variables.GetValue(_index) - _value;
             diff = diff < 0 ? 0 : diff + 1; // +1 because we want the value to be strictly smaller
 
-            // Set the individual cost of each variable to 0 if they 
-            // are not included in the constraint, set it to the
-            // difference that was just computed otherwise
-            for (int i = 0; i < variableCosts.Length; ++i)
-                variableCosts[i] = i == _index ? diff : 0.0;
+            // Add this cost to the cost of the constrained variable
+            variableCosts[_index] += diff;
 
             return diff;
         }

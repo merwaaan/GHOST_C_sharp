@@ -6,26 +6,26 @@ namespace TurretPlacement
     /**
      * This constraint ensures that turrets are placed on friendly tiles only.
      */
-    class InTerritory : TurretConstraint
+    class ProtectOwnTiles : TurretConstraint
     {
 
-        public InTerritory(TurretSet turrets)
+        public ProtectOwnTiles(TurretSet turrets)
             : base(turrets)
         {
         }
 
         public override double Cost(double[] variableCosts)
         {
-            // Accumulate cost for each turret out of its territory
-            var costs = Enumerable
+            // Count the allied tiles that are protected by each turret
+            var tiles = Enumerable
                 .Range(0, Variables.GetNumberVariables())
-                .Select(i => Variables[i].InOwnTerritory() ? 0.0 : 1.0f)
+                .Select(i => Variables[i].UniquelyProtectedTiles().Count())
                 .ToArray();
 
             for (int i = 0; i < variableCosts.Length; ++i)
-                variableCosts[i] += costs[i];
+                variableCosts[i] += 1.0f/tiles[i];
 
-            return costs.Sum();
+            return 1.0f/tiles.Sum();
         }
     }
 }
